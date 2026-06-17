@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask groundLayer;
 
+    public int FacingDirection { get; private set; } = 1;
+
     private Rigidbody2D body;
     private SpriteRenderer sprite;
     private Vector2 moveInput;
@@ -17,8 +19,6 @@ public class PlayerMovement : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
-
-        Debug.Log("Sprite found: " + sprite.name);
     }
 
     public void OnMove(InputValue value)
@@ -51,15 +51,22 @@ public class PlayerMovement : MonoBehaviour
         if(moveInput.x > 0)
         {
             sprite.flipX = false;
+            FacingDirection = 1;
         }
         if (moveInput.x < 0)
         {
             sprite.flipX = true;
+            FacingDirection = -1;
         }
 
         body.linearVelocity = new Vector2(
             moveInput.x * speed,
             body.linearVelocity.y 
         );
+    }
+
+    public bool CanAttack()
+    {
+        return IsGrounded();
     }
 }
