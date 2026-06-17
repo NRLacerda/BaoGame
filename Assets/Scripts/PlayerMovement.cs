@@ -11,10 +11,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
 
     private Rigidbody2D body;
+    private SpriteRenderer sprite;
     private Vector2 moveInput;
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
+
+        Debug.Log("Sprite found: " + sprite.name);
     }
 
     public void OnMove(InputValue value)
@@ -44,6 +48,15 @@ public class PlayerMovement : MonoBehaviour
 
     public void FixedUpdate()
     {
+        if(moveInput.x > 0)
+        {
+            sprite.flipX = false;
+        }
+        if (moveInput.x < 0)
+        {
+            sprite.flipX = true;
+        }
+
         body.linearVelocity = new Vector2(
             moveInput.x * speed,
             body.linearVelocity.y 
